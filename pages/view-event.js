@@ -1,14 +1,14 @@
-import { Container } from "@chakra-ui/react";
+
 //import Auth from "../components/Auth";
 import EventList from "../components/EventList";
-import Nav from "../components/Nav";
+import Layout from "../components/Layout";
 
 
 export default function ViewEvent(){
  return(
-  <Container maxW="7xl">
-    <Nav/>
+  <Layout>
+    
     <EventList />
-  </Container>
+  </Layout>
  )
 };

@@ -1,14 +1,16 @@
-import { Container } from "@chakra-ui/react";
+
 //import Auth from "../components/Auth";
 import TodoList from "../components/TodoList";
-import Nav from "../components/Nav";
+import Layout from "../components/Layout";
+
+
 
 
 export default function ViewTodo(){
  return(
-  <Container maxW="7xl">
-    <Nav/>
+    <Layout>
+    
     <TodoList />
-  </Container>
+  </Layout>
  )
 };

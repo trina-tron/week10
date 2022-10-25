@@ -4,6 +4,7 @@ import {
     Input,
     Button,
     Textarea,
+    Heading,
     Stack,
     Select,
     useToast
@@ -11,11 +12,13 @@ import {
 import useAuth from "../hooks/useAuth";
 import {addTodo} from "../api/todo";
 
+
 //define react jsx component
 const AddTodo = ()=>{
     //text input to associate a react state
     const [title, setTitle]=React.useState("");
     const [description, setDescription]=React.useState("");
+    const [due, setDue]=React.useState("");
     const [status, setStatus]= React.useState("pending");
     const [isLoading, setIsLoading]=React.useState(false);
     const toast=useToast();
@@ -41,6 +44,7 @@ const AddTodo = ()=>{
         const todo={
             title,
             description,
+            due,
             status,
             userId: user.uid
         };
@@ -51,6 +55,7 @@ const AddTodo = ()=>{
         //flushing out the status field
         setTitle("");
         setDescription("");
+        setDue("");
         setStatus("pending");
         //show status update
         toast(
@@ -65,6 +70,7 @@ const AddTodo = ()=>{
     return(
         <Box w="40%" margin={"0 auto"} display="block" mt={5}>
             <Stack direction="column">
+            <Heading as="h3" fontSize={{base:'15px', md:'24px', lg:'28px'}}>Make a new To Do</Heading>
                 <Input
                 placeholder="Title"
                 value={title}
@@ -75,6 +81,13 @@ const AddTodo = ()=>{
                     value={description}
                     onChange={(e)=>setDescription(e.target.value)}
                 />
+                <Textarea
+                    placeholder="Due date"
+                    value={due}
+                    onChange={(e)=>setDue(e.target.value)}
+                />
+                <Heading as="h3" fontSize={{base:'15px', md:'24px', lg:'28px'}}>
+                  Status</Heading>
                 <Select
                     value={status}
                     onChange={(e)=> setStatus(e.target.value)}>

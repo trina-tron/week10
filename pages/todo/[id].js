@@ -1,9 +1,9 @@
-import React from "react";
 import {
     Box,
     Heading,
-    SimplegGrid,
-    Text
+    Text,
+    Container,
+    Button
 } from "@chakra-ui/react";
 import useAuth from "../../hooks/useAuth";
 import {
@@ -11,6 +11,9 @@ import {
     getDoc
 } from "firebase/firestore";
 import {db} from "../../firebase";
+import Layout from "../../components/Layout";
+import Link from "next/link";
+
 
 const TodoItem= ({itemData})=>{
         //enforce user login
@@ -19,20 +22,31 @@ const TodoItem= ({itemData})=>{
             return;
         }
         //if code continues user has logged in
-       return( <Box mt={5}>
-            <Heading as="h3" fontSize={"xl"}>
+       return( 
+        <Layout>
+        <Container maxW='2xl' centerContent h='100vh'>
+        <Box padding='6' border="2px" borderColor='blue.500' color='black' maxW='lg' borderRadius="lg">
+              
+            <Heading as="h3" fontSize={"xl"} textAlign="center" textDecoration="underline" p="2">
                 {itemData.title}
             </Heading>
-            <Text>
+            <Text p="2">
                 {itemData.description}
             </Text>
-            <Text>
+            <Text p="2">
+                {itemData.due}
+            </Text>
+            <Text p="2">
                 {itemData.status}
             </Text>
-            <Text>
-                {itemData.createdAt}
-            </Text>
         </Box>
+        <Button m='2' p='2'bg={{base:'pink.500', md:"purple.500", lg:"blue.500"}} color="white">
+        <Link href="../view-todo">
+            Back 
+        </Link>
+        </Button>
+        </Container>
+        </Layout> 
        )
 };
 

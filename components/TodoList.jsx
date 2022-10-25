@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React,{useEffect, useState} from "react";
 import {
     Badge,
     Box,
@@ -17,6 +17,8 @@ import {
 import { db } from "../firebase";
 import { FaToggleOff, FaToggleOn, FaTrash } from "react-icons/fa";
 import { deleteTodo, toggleTodoStatus } from "../api/todo";
+import Link from "next/link";
+
 
 //define the jsx component for the list
 const TodoList = ()=>{
@@ -24,44 +26,43 @@ const TodoList = ()=>{
     const { user } = useAuth() || {};
     const toast = useToast();
     // nested function doing the work to update the l;ist from firestore data
-    const refreshData =()=>{
-        if(!user){
-            setTodos([]);
-            return;
-        }
-        const q = query(
-            collection(db, "todo"),
-            where("user", "==", user.uid)
-        );
-        //query is async, set up event handler with onsnapshot
-        onSnapshot(
-        q,
-        (querySnapShot)=>{
-            let ar=[];
-            //loop through each doc in the results
-            querySnapShot.docs.forEach(
-                (doc)=>{
-                    ar.push(
-                        {
-                        id:doc.id,
-                        //... means if .doc.data captures anything we will get that as well
-                        ...doc.data()
-                        }
-                    );
-                }
-            );
-            setTodos(ar);
-        }
-        );
-    };
+
     //tell recate to update the ui with refreshData
     useEffect(
         () => {
-            refreshData();
+            if(!user){
+                setTodos([]);
+                return;
+            }
+            const q = query(
+                collection(db, "todo"),
+                where("user", "==", user.uid)
+            );
+            //query is async, set up event handler with onsnapshot
+            onSnapshot(
+            q,
+            (querySnapShot)=>{
+                let ar=[];
+                //loop through each doc in the results
+                querySnapShot.docs.forEach(
+                    (doc)=>{
+                        ar.push(
+                            {
+                            id:doc.id,
+                            //... means if .doc.data captures anything we will get that as well
+                            ...doc.data()
+                            }
+                        );
+                    }
+                );
+                setTodos(ar);
+            }
+            );
         },
-        [user]
-    );
-    //function to let delete a todo
+            [user]
+        );
+        
+    //function to let user delete a todo
     const handleTodoDelete= async (id)=>{
         if(
             confirm("Are you sure you want to delete?")
@@ -75,6 +76,18 @@ const TodoList = ()=>{
             );
         }
     };
+
+    /*const handleTodoEdit= async(id, title)=>{
+       const newTitle = title == " ";
+        await editTodo({
+            docId : id,
+            title: newTitle
+        });
+        edit
+       
+        
+    }*/
+
     //function to toggle status
     const handleToggle = async (id, status)=>{
         const newStatus = status == "completed" ? "pending" : "completed";
@@ -102,6 +115,7 @@ const TodoList = ()=>{
                     p={3}
                     boxShadow="2xl"
                     shadow={"dark-lg"}
+                    bg='white'
                     transition="0.2s"
                     _hover={{boxShadow:"sm"}}
                     key={todo.id}
@@ -144,10 +158,18 @@ const TodoList = ()=>{
                             >
                                 {todo.status}
                             </Badge>
+                            
+                            
                         </Heading>
                         <Text>
                             {todo.description}
                         </Text>
+                        <Text>
+                            {todo.due}
+                        </Text>
+                        <Badge bg="blue.600" color="white">
+                            <Link href={`/todo/${todo.id}`}> View </Link> 
+                        </Badge>
                     </Box>
                    )
                    )

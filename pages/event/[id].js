@@ -2,8 +2,9 @@ import React from "react";
 import {
     Box,
     Heading,
-    SimplegGrid,
-    Text
+    Container,
+    Text,
+    Button
 } from "@chakra-ui/react";
 import useAuth from "../../hooks/useAuth";
 import {
@@ -11,6 +12,8 @@ import {
     getDoc
 } from "firebase/firestore";
 import {db} from "../../firebase";
+import Layout from "../../components/Layout";
+import Link from "next/link";
 
 const EventItem= ({eventData})=>{
         //enforce user login
@@ -19,23 +22,34 @@ const EventItem= ({eventData})=>{
             return;
         }
         //if code continues user has logged in
-       return( <Box mt={5}>
-            <Heading as="h3" fontSize={"xl"}>
+       return( 
+        <Layout>
+        <Container maxW='2xl'  centerContent h='100vh'>
+        <Box padding='6' border="2px" borderColor='blue.500' color='black' maxW='lg' borderRadius="lg">
+              
+            <Heading as="h3" fontSize={"xl"} textAlign="center" textDecoration="underline" p="2">
                 {eventData.title}
             </Heading>
-            <Text>
-                {eventData.description}
+            <Text p="2">
+               Description: {eventData.description}
             </Text>
-            <Text>
-                {eventData.date}
+            <Text p="2">
+                Date: {eventData.date}
             </Text>
-            <Text>
-                {eventData.location}
+            <Text p="2">
+               Location: {eventData.location}
             </Text>
-            <Text>
-                {eventData.status}
+            <Text p="2">
+               Status: {eventData.status}
             </Text>
         </Box>
+        <Button m='2' p='2'bg={{base:'pink.500', md:"purple.500", lg:"blue.500"}} color="white">
+        <Link href="../view-event">
+            Back 
+        </Link>
+        </Button>
+       </Container>
+        </Layout>
        )
 };
 
