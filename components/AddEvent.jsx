@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import useAuth from "../hooks/useAuth";
 import {addEvent} from "../api/event";
-import Head from "next/head";
+
 
 //define react jsx component
 const AddEvent = ()=>{
